@@ -3,9 +3,6 @@
 <h1 align="center">Stirling-PDF-chart</h1>
 
 Helm charts for Stirling-PDF
-
-[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/stirling-pdf&style=for-the-badge)](https://artifacthub.io/packages/search?user=Frooodle)
-
 </div>
 
 ## 🪐 Usage
@@ -13,7 +10,7 @@ Helm charts for Stirling-PDF
 Add the following repo to use the chart:
 
 ```console
-helm repo add stirling-pdf https://stirling-tools.github.io/Stirling-PDF-chart
+helm repo add stirling-pdf https://gallje98.github.io/Stirling-PDF-chart
 ```
 
 ## 🙋‍♂️ Support & Assistance
