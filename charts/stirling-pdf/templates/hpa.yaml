@@ -1,24 +1,23 @@
+
 {{- if .Values.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "stirling-pdf-chart.fullname" . }}
+  name: {{ include "stirlingpdf.fullname" . }}
   labels:
-    {{- include "stirling-pdf-chart.labels" . | nindent 4 }}
+    {{- include "stirlingpdf.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: {{ default "Deployment" .Values.autoscaling.targetRef.kind }}
-    name: {{ default (include "stirling-pdf-chart.fullname" .) .Values.autoscaling.targetRef.name }}
+    name: {{ default (include "stirlingpdf.fullname" .) .Values.autoscaling.targetRef.name }}
   minReplicas: {{ .Values.autoscaling.minReplicas | default 1 }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas | default 5 }}
 
-  {{- /* If full metrics list provided, render as-is */}}
   {{- if .Values.autoscaling.metrics }}
   metrics:
     {{- toYaml .Values.autoscaling.metrics | nindent 2 }}
   {{- else }}
-  {{- /* Otherwise build metrics from shorthands */}}
   metrics:
     {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
@@ -36,9 +35,9 @@ spec:
           type: Utilization
           averageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
-  {{  {{- end }}
+  {{- end }}
 
   {{- with .Values.autoscaling.behavior }}
   behavior:
-    {{- toYaml . | nindent 4 }}
+    {{    {{- toYaml . | nindent 4 }}
   {{- end }}
