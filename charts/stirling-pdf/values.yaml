@@ -119,13 +119,13 @@ serviceMonitor:
   # timeout: 60
   # interval: 60
 
-resources: {}
-#  limits:
-#    cpu: 100m
-#    memory: 128Mi
-#  requests:
-#    cpu: 80m
-#    memory: 64Mi
+resources: 
+limits:
+  cpu: 500m 
+  memory: 1Gi
+requests:
+  cpu: 80m
+  memory: 64Mi
 
 probes:
   liveness:
