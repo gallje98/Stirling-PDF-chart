@@ -39,5 +39,5 @@ spec:
 
   {{- with .Values.autoscaling.behavior }}
   behavior:
-    {{    {{- toYaml . | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
