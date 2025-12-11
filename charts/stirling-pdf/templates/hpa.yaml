@@ -8,15 +8,10 @@ metadata:
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
-    kind: {{ default "Deployment" .Values.autoscaling.targetRef.kind }}
-    name: {{ default (include "stirlingpdf.fullname" .) .Values.autoscaling.targetRef.name }}
-  minReplicas: {{ .Values.autoscaling.minReplicas | default 1 }}
-  maxReplicas: {{ .Values.autoscaling.maxReplicas | default 5 }}
-
-  {{- if .Values.autoscaling.metrics }}
-  metrics:
-    {{- toYaml .Values.autoscaling.metrics | nindent 2 }}
-  {{- else }}
+    kind: Deployment
+    name: {{ include "stirlingpdf.fullname" . }}
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
     {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
@@ -34,9 +29,4 @@ spec:
           type: Utilization
           averageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
-  {{- end }}
-
-  {{- with .Values.autoscaling.behavior }}
-  behavior:
-    {{- toYaml . | nindent 4 }}
-  {{  {{- end }}
+{{- end }}
