@@ -124,7 +124,7 @@ limits:
   cpu: 500m 
   memory: 1Gi
 requests:
-  cpu: 80m
+  cpu: 50m
   memory: 64Mi
 
 # -- Horizontal Pod Autoscaler (HPA)
