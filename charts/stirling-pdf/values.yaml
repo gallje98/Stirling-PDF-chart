@@ -127,6 +127,25 @@ requests:
   cpu: 80m
   memory: 64Mi
 
+# -- Horizontal Pod Autoscaler (HPA)
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 75
+
 probes:
   liveness:
     enabled: true
