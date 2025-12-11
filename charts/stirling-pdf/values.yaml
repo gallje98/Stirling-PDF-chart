@@ -1,7 +1,7 @@
 extraArgs:
   []
   # - --storage-timestamp-tolerance 1s
-replicaCount: 1
+replicaCount: 2
 strategy:
   type: RollingUpdate
 image:
@@ -21,17 +21,21 @@ commonLabels: {}
 rootPath: /
 
 # -- Environment variables to add to the stirling-pdf pods
-envs: []
-# - name: UI_APP_NAME
-#   value: "Stirling PDF"
-# - name: UI_HOME_DESCRIPTION
-#   value: "Your locally hosted one-stop-shop for all your PDF needs."
-# - name: UI_APP_NAVBAR_NAME
-#   value: "Stirling PDF"
-# - name: ALLOW_GOOGLE_VISIBILITY
-#   value: "true"
-# - name: APP_LOCALE
-#   value: "en_GB"
+envs:
+- name: UI_APP_NAME
+  value: "Stirling PDF"
+- name: UI_HOME_DESCRIPTION
+  value: "Your locally hosted one-stop-shop for all your PDF needs."
+- name: UI_APP_NAVBAR_NAME
+  value: "Stirling PDF"
+- name: ALLOW_GOOGLE_VISIBILITY
+  value: "true"
+- name: APP_LOCALE
+  value: "de_CH"
+- name: SECURITY_ENABLELOGIN
+  value: "false"
+- name: SYSTEM_ENABLEANALYTICS
+  value: "false"
 
 # -- Environment variables from secrets or configmaps to add to the stirling-pdf pods
 envsFrom: []
@@ -126,18 +130,18 @@ resources: {}
 probes:
   liveness:
     enabled: true
-    initialDelaySeconds: 5
+    initialDelaySeconds: 50
     periodSeconds: 10
-    timeoutSeconds: 1
+    timeoutSeconds: 3
     successThreshold: 1
     failureThreshold: 3
   livenessHttpGetConfig:
     scheme: HTTP
   readiness:
     enabled: true
-    initialDelaySeconds: 5
+    initialDelaySeconds: 50
     periodSeconds: 10
-    timeoutSeconds: 1
+    timeoutSeconds: 3
     successThreshold: 1
     failureThreshold: 3
   readinessHttpGetConfig:
@@ -220,36 +224,12 @@ volumePermissions:
 
 # -- Ingress for load balancer
 ingress:
-  enabled: false
-  pathType: "ImplementationSpecific"
-  # -- Stirling-pdf Ingress labels
-  labels:
-    {}
-    # dns: "route53"
-
-  # -- Stirling-pdf Ingress annotations
-  annotations:
-    {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-
-  # -- Stirling-pdf Ingress hostnames
-  # -- Must be provided if Ingress is enabled
+  enabled: true
+  ingressClassName: traefik
+  annotations: 
+	traefik.ingress.kubernetes.io/router.entrypoints: web
   hosts:
-    []
-    # - name: stirling-pdf.domain1.com
-    #   path: /
-    #   tls: false
-    # - name: stirling-pdf.domain2.com
-    #   path: /
-    #
-    #   ## Set this to true in order to enable TLS on the ingress record
-    #   tls: true
-    #
-    #   ## If TLS is set to true, you must declare what secret will store the key/certificate for TLS
-    #   ## Secrets must be added manually to the namespace
-    #   tlsSecret: stirling-pdf.domain2-tls
-
-  # -- For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
-  # -- See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-  ingressClassName:
+    - host: pdf.local
+      paths:
+        - path: /
+          pathType: Prefix
