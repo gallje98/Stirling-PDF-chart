@@ -226,10 +226,10 @@ volumePermissions:
 ingress:
   enabled: true
   ingressClassName: traefik
+  pathType: Prefix
   annotations: 
     traefik.ingress.kubernetes.io/router.entrypoints: web
   hosts:
     - host: pdf.local
       paths:
         - path: /
-          pathType: Prefix
